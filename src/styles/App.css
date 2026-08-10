@@ -440,4 +440,30 @@ h1 {
     grid-template-columns: 1fr;
   }
 
- 
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+
+  .steps span {
+    font-size: 0.7rem;
+  }
+
+  .navigation {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .add-skill-container {
+    flex-direction: column;
+  }
+
+  .resume-contact {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
