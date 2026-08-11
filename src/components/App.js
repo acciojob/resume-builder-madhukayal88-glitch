@@ -10,50 +10,29 @@ import Navigation from './components/Navigation';
 import './styles.css';
 
 function App() {
-  const currentPage = useSelector(state => state.currentPage);
-
-  const renderPage = () => {
-    switch(currentPage) {
-      case 1:
-        return <Profile />;
-      case 2:
-        return <Education />;
-      case 3:
-        return <Skills />;
-      case 4:
-        return <Projects />;
-      case 5:
-        return <SocialMedia />;
-      case 6:
-        return <ResumePreview />;
-      default:
-        return <Profile />;
-    }
-  };
+  const page = useSelector(state => state.page);
 
   return (
-    <div className="app-container">
+    <div className="app">
       <h1>📄 Resume Builder</h1>
-      <p className="subtitle">Build your professional resume step by step</p>
+      <div className="progress">
+        <span className={page >= 1 ? 'active' : ''}>Profile</span>
+        <span className={page >= 2 ? 'active' : ''}>Education</span>
+        <span className={page >= 3 ? 'active' : ''}>Skills</span>
+        <span className={page >= 4 ? 'active' : ''}>Projects</span>
+        <span className={page >= 5 ? 'active' : ''}>Social</span>
+        <span className={page >= 6 ? 'active' : ''}>Preview</span>
+      </div>
       
-      <div className="progress-bar">
-        <div className="steps">
-          <span className={currentPage >= 1 ? 'active' : ''}>Profile</span>
-          <span className={currentPage >= 2 ? 'active' : ''}>Education</span>
-          <span className={currentPage >= 3 ? 'active' : ''}>Skills</span>
-          <span className={currentPage >= 4 ? 'active' : ''}>Projects</span>
-          <span className={currentPage >= 5 ? 'active' : ''}>Social</span>
-          <span className={currentPage >= 6 ? 'active' : ''}>Preview</span>
-        </div>
-        <div className="progress-indicator">
-          Step {currentPage} of 6
-        </div>
+      <div className="page">
+        {page === 1 && <Profile />}
+        {page === 2 && <Education />}
+        {page === 3 && <Skills />}
+        {page === 4 && <Projects />}
+        {page === 5 && <SocialMedia />}
+        {page === 6 && <ResumePreview />}
       </div>
-
-      <div className="page-container">
-        {renderPage()}
-      </div>
-
+      
       <Navigation />
     </div>
   );
