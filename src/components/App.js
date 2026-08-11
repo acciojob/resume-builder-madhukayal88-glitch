@@ -12,27 +12,30 @@ import './styles.css';
 function App() {
   const page = useSelector(state => state.page);
 
+  const renderPage = () => {
+    switch(page) {
+      case 1: return <Profile />;
+      case 2: return <Education />;
+      case 3: return <Skills />;
+      case 4: return <Projects />;
+      case 5: return <SocialMedia />;
+      case 6: return <ResumePreview />;
+      default: return <Profile />;
+    }
+  };
+
   return (
     <div className="app">
       <h1>📄 Resume Builder</h1>
-      <div className="progress">
-        <span className={page >= 1 ? 'active' : ''}>Profile</span>
-        <span className={page >= 2 ? 'active' : ''}>Education</span>
-        <span className={page >= 3 ? 'active' : ''}>Skills</span>
-        <span className={page >= 4 ? 'active' : ''}>Projects</span>
-        <span className={page >= 5 ? 'active' : ''}>Social</span>
-        <span className={page >= 6 ? 'active' : ''}>Preview</span>
+      <div className="steps">
+        <span className={page === 1 ? 'active' : ''}>Profile</span>
+        <span className={page === 2 ? 'active' : ''}>Education</span>
+        <span className={page === 3 ? 'active' : ''}>Skills</span>
+        <span className={page === 4 ? 'active' : ''}>Projects</span>
+        <span className={page === 5 ? 'active' : ''}>Social</span>
+        <span className={page === 6 ? 'active' : ''}>Preview</span>
       </div>
-      
-      <div className="page">
-        {page === 1 && <Profile />}
-        {page === 2 && <Education />}
-        {page === 3 && <Skills />}
-        {page === 4 && <Projects />}
-        {page === 5 && <SocialMedia />}
-        {page === 6 && <ResumePreview />}
-      </div>
-      
+      <div className="content">{renderPage()}</div>
       <Navigation />
     </div>
   );
