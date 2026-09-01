@@ -1,53 +1,59 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentPage } from '../redux/actions';
+import { setCurrentPage, saveResume } from '../actions/resumeActions';
 
-function Navigation() {
+const Navigation = ({ totalPages }) => {
   const dispatch = useDispatch();
-  const currentPage = useSelector(state => state.currentPage);
+  const currentPage = useSelector(state => state.resume.currentPage);
 
   const handleNext = () => {
-    if (currentPage < 6) {
+    if (currentPage < totalPages - 1) {
       dispatch(setCurrentPage(currentPage + 1));
     }
   };
 
   const handleBack = () => {
-    if (currentPage > 1) {
+    if (currentPage > 0) {
       dispatch(setCurrentPage(currentPage - 1));
     }
   };
 
+  const handleSaveContinue = () => {
+    if (currentPage < totalPages - 1) {
+      dispatch(saveResume());
+      dispatch(setCurrentPage(currentPage + 1));
+    } else {
+      dispatch(saveResume());
+    }
+  };
+
   return (
-    <div className="navigation">
+    <div className="navigation-container">
       <button 
         id="back" 
-        className="btn btn-back" 
+        className="nav-btn back-btn" 
         onClick={handleBack}
-        disabled={currentPage === 1}
+        disabled={currentPage === 0}
       >
-        ← Back
+        Back
       </button>
-      
-      {currentPage < 6 ? (
-        <button 
-          id="save_continue" 
-          className="btn btn-next" 
-          onClick={handleNext}
-        >
-          Save & Continue →
-        </button>
-      ) : (
-        <button 
-          id="next" 
-          className="btn btn-next" 
-          onClick={() => alert('Resume completed! You can now download your resume.')}
-        >
-          ✅ Complete
-        </button>
-      )}
+      <button 
+        id="save_continue" 
+        className="nav-btn save-continue-btn" 
+        onClick={handleSaveContinue}
+      >
+        {currentPage === totalPages - 1 ? 'Save Resume' : 'Save & Continue'}
+      </button>
+      <button 
+        id="next" 
+        className="nav-btn next-btn" 
+        onClick={handleNext}
+        disabled={currentPage === totalPages - 1}
+      >
+        Next
+      </button>
     </div>
   );
-}
+};
 
 export default Navigation;
