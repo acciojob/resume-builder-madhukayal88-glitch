@@ -1,69 +1,60 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSkill, removeSkill } from '../redux/actions';
+import { addSkill, deleteSkill } from '../actions/resumeActions';
 
-function Skills() {
+const Skills = () => {
   const dispatch = useDispatch();
-  const skillsList = useSelector(state => state.skills);
-  const [skill, setSkill] = useState('');
+  const skillsList = useSelector(state => state.resume.skills);
+  const [newSkill, setNewSkill] = useState('');
 
-  const handleAdd = () => {
-    if (!skill.trim()) {
-      alert('Please enter a skill');
-      return;
+  const handleAddSkill = (e) => {
+    e.preventDefault();
+    if (newSkill.trim()) {
+      dispatch(addSkill({ name: newSkill.trim() }));
+      setNewSkill('');
     }
-    dispatch(addSkill(skill.trim()));
-    setSkill('');
   };
 
-  const handleDelete = (index) => {
-    dispatch(removeSkill(index));
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleAdd();
-    }
+  const handleDeleteSkill = (id) => {
+    dispatch(deleteSkill(id));
   };
 
   return (
-    <div className="page-content">
-      <h2>🛠️ Skills</h2>
+    <div className="section-container skills-section">
+      <h2>Skills</h2>
       
-      <div className="add-skill-container">
-        <input
-          type="text"
-          name="skill"
-          value={skill}
-          onChange={(e) => setSkill(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Enter a skill (e.g., JavaScript)"
-          className="skill-input"
-        />
-        <button id="add_skill" className="btn btn-add" onClick={handleAdd}>
-          ➕ Add Skill
+      <form onSubmit={handleAddSkill} className="add-skill-form">
+        <div className="form-group">
+          <input
+            type="text"
+            name="skill"
+            value={newSkill}
+            onChange={(e) => setNewSkill(e.target.value)}
+            placeholder="Enter a skill"
+            className="form-control"
+          />
+        </div>
+        <button type="submit" id="add_skill" className="add-btn">
+          Add Skill
         </button>
-      </div>
+      </form>
 
-      <div className="entries-list">
-        <h3>Your Skills</h3>
-        {skillsList.length === 0 ? (
-          <p className="empty-message">No skills added yet</p>
-        ) : (
-          <div className="skills-tags">
-            {skillsList.map((skill, index) => (
-              <div key={index} className="skill-tag">
-                <span className="skill-name">{skill}</span>
-                <button id="delete_skill" className="btn btn-delete-small" onClick={() => handleDelete(index)}>
-                  ✕
-                </button>
-              </div>
-            ))}
+      <div className="skills-container">
+        {skillsList.map((skill) => (
+          <div key={skill.id} className="skill-tag">
+            <span className="skill-name">{skill.name}</span>
+            <button 
+              onClick={() => handleDeleteSkill(skill.id)} 
+              id="delete_skill" 
+              className="delete-skill-btn"
+            >
+              ×
+            </button>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default Skills;
