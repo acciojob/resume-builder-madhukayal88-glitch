@@ -1,64 +1,94 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSocial, removeSocial } from '../redux/actions';
+import { addSocial, deleteSocial } from '../actions/resumeActions';
 
-function SocialMedia() {
+const SocialMedia = () => {
   const dispatch = useDispatch();
-  const socialList = useSelector(state => state.social);
-  const [social, setSocial] = useState('');
+  const socialList = useSelector(state => state.resume.socialMedia);
+  const [formData, setFormData] = useState({
+    platform: '',
+    url: ''
+  });
 
-  const handleAdd = () => {
-    if (!social.trim()) {
-      alert('Please enter a social media link');
-      return;
-    }
-    dispatch(addSocial(social.trim()));
-    setSocial('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleDelete = (index) => {
-    dispatch(removeSocial(index));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.platform && formData.url) {
+      dispatch(addSocial(formData));
+      setFormData({
+        platform: '',
+        url: ''
+      });
+    }
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteSocial(id));
   };
 
   return (
-    <div className="page-content">
-      <h2>🔗 Social Media</h2>
+    <div className="section-container social-section">
+      <h2>Social Media Links</h2>
       
-      <div className="add-skill-container">
-        <input
-          type="url"
-          name="Social"
-          value={social}
-          onChange={(e) => setSocial(e.target.value)}
-          placeholder="Enter social media URL (e.g., https://linkedin.com/in/username)"
-          className="skill-input"
-        />
-        <button id="add_social" className="btn btn-add" onClick={handleAdd}>
-          ➕ Add Social Link
+      <form onSubmit={handleSubmit} className="social-form">
+        <div className="form-row">
+          <div className="form-group">
+            <label>Platform</label>
+            <input
+              type="text"
+              name="platform"
+              value={formData.platform}
+              onChange={handleChange}
+              placeholder="e.g., LinkedIn"
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>URL</label>
+            <input
+              type="url"
+              name="url"
+              value={formData.url}
+              onChange={handleChange}
+              placeholder="Enter profile URL"
+              className="form-control"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" id="add_social" className="add-btn">
+          Add Social Link
         </button>
-      </div>
+      </form>
 
-      <div className="entries-list">
-        <h3>Your Social Links</h3>
-        {socialList.length === 0 ? (
-          <p className="empty-message">No social links added yet</p>
-        ) : (
-          socialList.map((link, index) => (
-            <div key={index} className="entry-item">
-              <div className="entry-details">
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                  🔗 {link}
-                </a>
-              </div>
-              <button className="btn btn-delete" onClick={() => handleDelete(index)}>
-                ✕
-              </button>
-            </div>
-          ))
-        )}
+      <div className="social-list">
+        {socialList.map((social) => (
+          <div key={social.id} className="social-item">
+            <span className="social-platform">{social.platform}</span>
+            <a 
+              href={social.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-url"
+            >
+              {social.url}
+            </a>
+            <button 
+              onClick={() => handleDelete(social.id)} 
+              className="delete-social-btn"
+            >
+              ×
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default SocialMedia;
