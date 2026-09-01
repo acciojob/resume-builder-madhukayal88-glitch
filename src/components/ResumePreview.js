@@ -1,85 +1,83 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-function ResumePreview() {
-  const profile = useSelector(state => state.profile);
-  const education = useSelector(state => state.education);
-  const skills = useSelector(state => state.skills);
-  const projects = useSelector(state => state.projects);
-  const social = useSelector(state => state.social);
+const ResumePreview = () => {
+  const { profile, education, skills, projects, socialMedia } = useSelector(
+    state => state.resume
+  );
 
   return (
-    <div className="page-content">
-      <h2>📄 Resume Preview</h2>
+    <div className="section-container preview-section">
+      <h2>Resume Preview</h2>
       
       <div className="resume-preview">
         <div className="resume-header">
-          <h1>{profile.fname} {profile.lname}</h1>
-          <div className="resume-contact">
-            <span>📞 {profile.phone}</span>
-            <span>📍 {profile.address}</span>
-            {profile.url && <span>🔗 <a href={profile.url} target="_blank" rel="noopener noreferrer">{profile.url}</a></span>}
+          {profile.image && (
+            <div className="profile-image-container">
+              <img src={profile.image} alt="Profile" className="preview-profile-image" />
+            </div>
+          )}
+          <div className="profile-info">
+            <h1>{profile.fname} {profile.lname}</h1>
+            {profile.phone && <p>📞 {profile.phone}</p>}
+            {profile.address && <p>📍 {profile.address}</p>}
+            {profile.url && <p>🔗 <a href={profile.url} target="_blank" rel="noopener noreferrer">{profile.url}</a></p>}
           </div>
         </div>
 
-        <div className="resume-section">
-          <h3>🎓 Education</h3>
-          {education.length === 0 ? (
-            <p>No education added</p>
-          ) : (
-            education.map((edu, index) => (
+        {education.length > 0 && (
+          <div className="resume-section">
+            <h3>Education</h3>
+            {education.map((edu, index) => (
               <div key={index} className="resume-item">
                 <h4>{edu.courseName}</h4>
-                <p>{edu.college} ({edu.completionYear})</p>
-                <p className="resume-percentage">{edu.percentage}</p>
+                <p><strong>College:</strong> {edu.college}</p>
+                <p><strong>Year:</strong> {edu.completionYear}</p>
+                <p><strong>Percentage:</strong> {edu.percentage}%</p>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
 
-        <div className="resume-section">
-          <h3>🛠️ Skills</h3>
-          {skills.length === 0 ? (
-            <p>No skills added</p>
-          ) : (
-            <div className="resume-skills">
+        {skills.length > 0 && (
+          <div className="resume-section">
+            <h3>Skills</h3>
+            <div className="skills-preview">
               {skills.map((skill, index) => (
-                <span key={index} className="resume-skill-tag">{skill}</span>
+                <span key={index} className="skill-tag-preview">{skill.name}</span>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        <div className="resume-section">
-          <h3>📁 Projects</h3>
-          {projects.length === 0 ? (
-            <p>No projects added</p>
-          ) : (
-            projects.map((project, index) => (
+        {projects.length > 0 && (
+          <div className="resume-section">
+            <h3>Projects</h3>
+            {projects.map((project, index) => (
               <div key={index} className="resume-item">
                 <h4>{project.projectName}</h4>
-                <p className="resume-tech"><strong>Tech:</strong> {project.techStack}</p>
+                <p><strong>Tech Stack:</strong> {project.techStack}</p>
                 <p>{project.description}</p>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
 
-        <div className="resume-section">
-          <h3>🔗 Social Media</h3>
-          {social.length === 0 ? (
-            <p>No social links added</p>
-          ) : (
-            social.map((link, index) => (
-              <div key={index} className="resume-item">
-                <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+        {socialMedia.length > 0 && (
+          <div className="resume-section">
+            <h3>Social Media</h3>
+            {socialMedia.map((social, index) => (
+              <div key={index} className="social-preview">
+                <a href={social.url} target="_blank" rel="noopener noreferrer">
+                  {social.platform}: {social.url}
+                </a>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default ResumePreview;
