@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import profileReducer from '../features/profile/profileSlice';
-import educationReducer from '../features/education/educationSlice';
-import skillsReducer from '../features/skills/skillsSlice';
-import projectsReducer from '../features/projects/projectsSlice';
-import socialReducer from '../features/social/socialSlice';
+import profileReducer from './profileSlice';
+import educationReducer from './educationSlice';
+import skillsReducer from './skillsSlice';
+import projectsReducer from './projectsSlice';
+import socialReducer from './socialSlice';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     profile: profileReducer,
     education: educationReducer,
@@ -14,3 +14,5 @@ export const store = configureStore({
     social: socialReducer,
   },
 });
+
+export default store;
