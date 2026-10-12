@@ -1,17 +1,10 @@
+// store.js or profileSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  fname: '', lname: '', phone: '', address: '', url: '', image: '',
+  profile: { fname: '', lname: '', phone: '', address: '', url: '' },
+  education: [], // Array of objects containing: courseName, completionYear, college, percentage
+  skills: [],    // Array of strings or objects with skill
+  projects: [],  // Array of objects containing: projectName, techStack, description
+  socials: []    // Array of social links
 };
-
-const profileSlice = createSlice({
-  name: 'profile',
-  initialState,
-  reducers: {
-    updateProfile: (state, action) => ({ ...state, ...action.payload }),
-    resetProfile: () => initialState,
-  },
-});
-
-export const { updateProfile, resetProfile } = profileSlice.actions;
-export default profileSlice.reducer;
