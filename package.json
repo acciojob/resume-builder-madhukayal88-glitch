@@ -1,35 +1,23 @@
 {
-  "name": "resume-builder-madhukayal88-glitch",
-  "version": "0.1.0",
+  "name": "resume-builder",
+  "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "client": "react-scripts start",
+    "dev": "concurrently \"node server.js\" \"react-scripts start\"",
+    "build": "react-scripts build"
+  },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.1.1",
+    "@reduxjs/toolkit": "^2.2.7",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
     "react-scripts": "5.0.1"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "devDependencies": {}
 }
