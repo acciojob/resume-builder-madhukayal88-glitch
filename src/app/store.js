@@ -1,18 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import profileReducer from './profileSlice';
-import educationReducer from './educationSlice';
-import skillsReducer from './skillsSlice';
-import projectsReducer from './projectsSlice';
-import socialReducer from './socialSlice';
+import { createStore, combineReducers } from 'redux';
+import resumeReducer from './reducer';
 
-const store = configureStore({
-  reducer: {
-    profile: profileReducer,
-    education: educationReducer,
-    skills: skillsReducer,
-    projects: projectsReducer,
-    social: socialReducer,
-  },
+const rootReducer = combineReducers({
+  resume: resumeReducer
 });
+
+const store = createStore(rootReducer);
 
 export default store;
