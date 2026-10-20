@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+Resume Builder (Redux)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A multi-page Resume Builder built with React + Redux Toolkit. It walks the user through five sections — Profile, Education, Skills, Projects and Social Media — and finally renders a complete, saveable resume.
 
-## Available Scripts
+AccioJob — MERN Stack assignment. Solution repo: resume-builder-madhukayal88-glitch
 
-In the project directory, you can run:
+✨ Features
 
-### `npm start`
+- Multi-page form with a visual stepper (Profile → Education → Skills → Mini Project → Social).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Every section supports adding, editing and deleting entries.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Smooth navigation with Back, Next and Save and Continue buttons.
 
-### `npm test`
+- All application state is managed with Redux (@reduxjs/toolkit + react-redux).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Final resume output page with Reset / Edit / Download-Preview.
 
-### `npm run build`
+- Resume is saved and loaded (persisted) so it survives a page reload.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+🗂️ Project structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+.
+├── public/
+│   └── index.html
+├── src/
+│   ├── components/
+│   │   ├── Stepper.js         # progress indicator
+│   │   ├── Profile.js         # Page 1
+│   │   ├── Education.js       # Page 2
+│   │   ├── Skills.js          # Page 3
+│   │   ├── Projects.js        # Page 4
+│   │   ├── Social.js          # Page 5
+│   │   └── ResumeOutput.js    # Final resume
+│   ├── store/
+│   │   ├── store.js           # configureStore
+│   │   └── resumeSlice.js     # all reducers/actions
+│   ├── styles/App.css
+│   ├── App.js
+│   └── index.js
+├── server/index.js            # optional JSON "database" backend
+├── tests/validate.py          # end-to-end Playwright check
+├── webpack.config.js
+└── package.json
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+🚀 Getting started
 
-### `npm run eject`
+# 1. install dependencies
+npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# 2. start the dev server (http://localhost:8080)
+npm start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The app is served on http://localhost:8080.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Optional real backend ("database"):
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+npm run server      # http://localhost:5000  (stores data/resume.json)
 
-## Learn More
+🔌 Selectors used by the tests
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+ Section Selectors
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+ Navigation #next, #save_continue, #back
 
-### Code Splitting
+ Profile name="fname", name="lname", name="phone", name="address", name="url"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+ Education name="courseName", name="completionYear", name="college", name="percentage", #add_education, #delete
 
-### Analyzing the Bundle Size
+ Skills name="skill", #add_skill, #delete_skill
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+ Projects name="projectName", name="techStack", name="description", #add_project, #delete
 
-### Making a Progressive Web App
+ Social name="Social", #add_social
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+🧠 Redux state shape
 
-### Advanced Configuration
+{
+  resume: {
+    page: 1,                       // 1..5 form pages, 6 = final resume
+    profile: { fname, lname, phone, address, url },
+    education: [{ id, courseName, completionYear, college, percentage }],
+    skills:    [{ id, skill }],
+    projects:  [{ id, projectName, techStack, description }],
+    social:    [{ id, Social }],
+  }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+🧪 Validation
 
-### Deployment
+An end-to-end Playwright check that mirrors the required flow lives in tests/validate.py:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+python3 tests/validate.py
