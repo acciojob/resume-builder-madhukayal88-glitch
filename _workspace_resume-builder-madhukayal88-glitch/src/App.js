@@ -25,8 +25,7 @@ const App = () => {
     } catch (e) {
       /* ignore corrupt data */
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   /* Persist the whole resume to the "database" (localStorage). */
   const saveToDatabase = () => {
@@ -84,6 +83,7 @@ const App = () => {
             id="back"
             className={`resume-button back ${page === 1 ? "is-disabled" : ""}`}
             onClick={handleBack}
+            disabled={page === 1}
             type="button"
           >
             BACK
