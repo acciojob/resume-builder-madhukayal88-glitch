@@ -72,11 +72,11 @@ const Skills = () => {
       {skills.length > 0 && (
         <ul className="entry-list skills-list">
           {skills.map((item) => (
-            <li className="entry-item" key={item.id}>
+            <li className="entry-item skill-item" key={item.id}>
               <div className="entry-text">{item.skill}</div>
               <div>
                 <button
-                  className="btn btn-small"
+                  className="btn btn-small edit-btn"
                   onClick={() => handleEdit(item)}
                   type="button"
                   style={{ marginRight: "6px" }}
@@ -84,7 +84,7 @@ const Skills = () => {
                   Edit
                 </button>
                 <button
-                  className="btn btn-small btn-delete"
+                  className="btn btn-small btn-delete delete-btn"
                   onClick={() => dispatch(deleteSkill(item.id))}
                   type="button"
                 >

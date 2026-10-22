@@ -17,21 +17,51 @@ const App = () => {
   const page = useSelector((s) => s.resume.page);
   const state = useSelector((s) => s.resume);
 
-  /* Load any previously saved resume from the "database" (localStorage). */
+  /* Load any previously saved resume from the "database" (API / localStorage). */
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) dispatch(hydrate(JSON.parse(raw)));
-    } catch (e) {
-      /* ignore corrupt data */
-    }
+    const loadData = async () => {
+      let loaded = false;
+      try {
+        const res = await fetch("/api/resume/1");
+        if (res.ok) {
+          const data = await res.json();
+          if (data && (data.profile || data.education)) {
+            dispatch(hydrate(data));
+            loaded = true;
+          }
+        }
+      } catch (err) {
+        /* fallback to localStorage */
+      }
+
+      if (!loaded) {
+        try {
+          const raw = window.localStorage.getItem(STORAGE_KEY);
+          if (raw) dispatch(hydrate(JSON.parse(raw)));
+        } catch (e) {
+          /* ignore corrupt data */
+        }
+      }
+    };
+
+    loadData();
   }, [dispatch]);
 
-  /* Persist the whole resume to the "database" (localStorage). */
-  const saveToDatabase = () => {
+  /* Persist the whole resume to the "database" (localStorage + API). */
+  const saveToDatabase = async () => {
     try {
       const { page: _page, ...persisted } = state;
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(persisted));
+
+      try {
+        await fetch("/api/resume/1", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(persisted),
+        });
+      } catch (err) {
+        /* backend offline, fallback is localStorage */
+      }
     } catch (e) {
       /* ignore quota errors */
     }
@@ -41,7 +71,9 @@ const App = () => {
   const handleBack = () => dispatch(goBack());
   const handleSaveContinue = () => {
     saveToDatabase();
-    dispatch(goNext());
+    if (page < 6) {
+      dispatch(goNext());
+    }
   };
 
   const renderPage = () => {
@@ -63,8 +95,6 @@ const App = () => {
     }
   };
 
-  const isFinal = page === 6;
-
   return (
     <div className="app">
       <header className="app-header">
@@ -77,37 +107,36 @@ const App = () => {
         <div className="form-area">{renderPage()}</div>
       </main>
 
-      {!isFinal && (
-        <div className="buttons-lists" id="navigation">
-          <button
-            id="back"
-            className={`resume-button back ${page === 1 ? "is-disabled" : ""}`}
-            onClick={handleBack}
-            disabled={page === 1}
-            type="button"
-          >
-            BACK
-          </button>
+      <div className="buttons-lists" id="navigation">
+        <button
+          id="back"
+          className={`resume-button back ${page === 1 ? "is-disabled" : ""}`}
+          onClick={handleBack}
+          disabled={page === 1}
+          type="button"
+        >
+          BACK
+        </button>
 
-          <button
-            id="next"
-            className="resume-button next"
-            onClick={handleNext}
-            type="button"
-          >
-            NEXT
-          </button>
+        <button
+          id="next"
+          className={`resume-button next ${page === 6 ? "is-disabled" : ""}`}
+          onClick={handleNext}
+          disabled={page === 6}
+          type="button"
+        >
+          NEXT
+        </button>
 
-          <button
-            id="save_continue"
-            className="resume-button save"
-            onClick={handleSaveContinue}
-            type="button"
-          >
-            SAVE AND CONTINUE
-          </button>
-        </div>
-      )}
+        <button
+          id="save_continue"
+          className="resume-button save"
+          onClick={handleSaveContinue}
+          type="button"
+        >
+          SAVE AND CONTINUE
+        </button>
+      </div>
     </div>
   );
 };

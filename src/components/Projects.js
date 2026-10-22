@@ -109,14 +109,14 @@ const Projects = () => {
       {projects.length > 0 && (
         <ul className="entry-list projects-list">
           {projects.map((item) => (
-            <li className="entry-item" key={item.id}>
+            <li className="entry-item project-item" key={item.id}>
               <div className="entry-text">
                 <strong>{item.projectName}</strong> — {item.techStack}
                 <div className="entry-desc">{item.description}</div>
               </div>
               <div>
                 <button
-                  className="btn btn-small"
+                  className="btn btn-small edit-btn"
                   onClick={() => handleEdit(item)}
                   type="button"
                   style={{ marginRight: "6px" }}
@@ -124,7 +124,7 @@ const Projects = () => {
                   Edit
                 </button>
                 <button
-                  className="btn btn-small btn-delete"
+                  className="btn btn-small btn-delete delete-btn"
                   onClick={() => dispatch(deleteProject(item.id))}
                   type="button"
                 >

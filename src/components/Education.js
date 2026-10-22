@@ -129,14 +129,14 @@ const Education = () => {
       {education.length > 0 && (
         <ul className="entry-list education-list">
           {education.map((item) => (
-            <li className="entry-item" key={item.id}>
+            <li className="entry-item education-item" key={item.id}>
               <div className="entry-text">
                 <strong>{item.courseName}</strong> — {item.college} (
                 {item.completionYear}) {item.percentage}%
               </div>
               <div>
                 <button
-                  className="btn btn-small"
+                  className="btn btn-small edit-btn"
                   onClick={() => handleEdit(item)}
                   type="button"
                   style={{ marginRight: "6px" }}
@@ -144,7 +144,7 @@ const Education = () => {
                   Edit
                 </button>
                 <button
-                  className="btn btn-small btn-delete"
+                  className="btn btn-small btn-delete delete-btn"
                   onClick={() => dispatch(deleteEducation(item.id))}
                   type="button"
                 >

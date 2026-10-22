@@ -73,7 +73,7 @@ const Social = () => {
       {social.length > 0 && (
         <ul className="entry-list social-list">
           {social.map((item) => (
-            <li className="entry-item" key={item.id}>
+            <li className="entry-item social-item" key={item.id}>
               <div className="entry-text">
                 <a href={item.Social} target="_blank" rel="noreferrer">
                   {item.Social}
@@ -81,7 +81,7 @@ const Social = () => {
               </div>
               <div>
                 <button
-                  className="btn btn-small"
+                  className="btn btn-small edit-btn"
                   onClick={() => handleEdit(item)}
                   type="button"
                   style={{ marginRight: "6px" }}
@@ -89,7 +89,7 @@ const Social = () => {
                   Edit
                 </button>
                 <button
-                  className="btn btn-small btn-delete"
+                  className="btn btn-small btn-delete delete-btn"
                   onClick={() => dispatch(deleteSocial(item.id))}
                   type="button"
                 >

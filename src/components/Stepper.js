@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { gotoPage } from "../store/resumeSlice";
 
 const STEPS = [
   "Profile Section",
@@ -9,6 +11,8 @@ const STEPS = [
 ];
 
 const Stepper = ({ current }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="stepper">
       {STEPS.map((title, index) => {
@@ -16,7 +20,14 @@ const Stepper = ({ current }) => {
         const active = stepNo === current;
         const done = stepNo < current;
         return (
-          <div className="stepper-item" key={title}>
+          <div
+            className="stepper-item"
+            key={title}
+            onClick={() => dispatch(gotoPage(stepNo))}
+            style={{ cursor: "pointer" }}
+            role="button"
+            tabIndex={0}
+          >
             <div
               className={`stepper-circle ${active ? "active" : ""} ${
                 done ? "done" : ""
